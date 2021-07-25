@@ -2,11 +2,11 @@
 	"name": "pyniedb",
 	"version": "1.0.0",
 	"description": "PynieDB is a local database for your simple applications",
-	"main": "index.js",
+	"main": "index.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"start": "node index.js",
-		"dev": "nodemon index.js"
+		"start": "ts-node index.ts",
+		"dev": "nodemon index.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -25,6 +25,10 @@
 	},
 	"homepage": "https://github.com/sirlucasm/pyniedb#readme",
 	"devDependencies": {
-		"nodemon": "^2.0.12"
+		"@types/node": "^16.4.2",
+		"nodemon": "^2.0.12",
+		"ts-node": "^10.1.0",
+		"tslib": "^2.3.0",
+		"typescript": "^4.3.5"
 	}
 }
