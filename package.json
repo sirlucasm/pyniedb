@@ -1,0 +1,30 @@
+{
+	"name": "pyniedb",
+	"version": "1.0.0",
+	"description": "PynieDB is a local database for your simple applications",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node index.js",
+		"dev": "nodemon index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sirlucasm/pyniedb.git"
+	},
+	"keywords": [
+		"pynie",
+		"local database",
+		"pyniedb",
+		"banco de dados local"
+	],
+	"author": "sirlucasm",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/sirlucasm/pyniedb/issues"
+	},
+	"homepage": "https://github.com/sirlucasm/pyniedb#readme",
+	"devDependencies": {
+		"nodemon": "^2.0.12"
+	}
+}
