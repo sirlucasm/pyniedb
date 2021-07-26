@@ -2,15 +2,18 @@
 	"name": "pyniedb",
 	"version": "1.0.0",
 	"description": "PynieDB is a local database for your simple applications",
-	"main": "index.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "ts-node index.ts",
-		"dev": "nodemon index.ts"
+		"dev": "tsc && nodemon lib/index.js",
+		"build": "tsc",
+		"prepare": "npm run build"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/sirlucasm/pyniedb.git"
+		"url": "git+https://github.com/sirlucasm/pyniedb-usage.git"
 	},
 	"keywords": [
 		"pynie",
@@ -21,9 +24,9 @@
 	"author": "sirlucasm",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/sirlucasm/pyniedb/issues"
+		"url": "https://github.com/sirlucasm/pyniedb-usage/issues"
 	},
-	"homepage": "https://github.com/sirlucasm/pyniedb#readme",
+	"homepage": "https://github.com/sirlucasm/pyniedb-usage#readme",
 	"devDependencies": {
 		"@types/node": "^16.4.2",
 		"nodemon": "^2.0.12",

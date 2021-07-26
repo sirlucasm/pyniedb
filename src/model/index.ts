@@ -30,7 +30,6 @@ class Model implements IModel{
 			} else {
 				schemaStructure.id = allData[allData.length - 1].id + 1;
 				allData.push(schemaStructure);
-				console.log(allData);
 				await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify(allData));
 			}
 
@@ -54,7 +53,7 @@ class Model implements IModel{
 		try {
 			const allData = await this.findAll();
 
-			return allData.find(data => data[param] === value);
+			return allData.find(data => data[param] == value);
 		} catch(error) {
 			return Promise.reject(error);
 		}
