@@ -59,6 +59,16 @@ class Model implements IModel{
 		}
 	}
 
+	async delete(param: string, value: any): Promise<void> {
+		try {
+			const allData = await this.findAll();
+			const newData = allData.find(data => data[param] != value);
+			await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify(newData));
+		} catch(error) {
+			return Promise.reject(error);
+		}
+	}
+
 	setPath(path: string) {
 		this.path = path;
 	}
