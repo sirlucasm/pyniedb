@@ -1,4 +1,4 @@
-import { ModelClass, SchemaStructure } from '../types/Model';
+import { ModelClass, } from '../types/Model';
 import fs from 'fs';
 import fsPromise from 'fs/promises';
 
@@ -23,11 +23,28 @@ class Model implements ModelClass{
 		}
 	}
 
-	async create (data: object): Promise<object> {
+	async create (data: any): Promise<object> {
 		try {
-			const schemaStructure: SchemaStructure = { id: 1, ...data };
-
+			const schema = this.schema.schema;
+			const schemaStructure: any = { id: 1, ...data};
 			const allData: Array<any> = await this.findAll();
+
+			Object.keys(schema).map((obj) => {
+				let dataType = typeof data[obj];
+				let schemaType = schema[obj].type;
+				let dataObjKeys = Object.keys(data);
+				let schemaDefaultValue = schema[obj].default;
+
+				if (!dataObjKeys.includes(obj) && typeof schemaDefaultValue == 'undefined') throw new Error(`Expected param '${obj}'`);
+				if (dataType != schemaType && typeof schemaDefaultValue == 'undefined') throw new Error(`the type '${dataType}' is not expected. Expected is: ${schemaType}`);
+
+				if (typeof schemaDefaultValue != 'undefined') {
+					schemaStructure[obj] = schemaDefaultValue;
+					Object.keys(data).map((dataObj) => {
+						if (!schema[dataObj]) delete schemaStructure[dataObj];
+					});
+				}
+			});
 
 			if (allData.length <= 0) {
 				await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify([schemaStructure]));
@@ -73,7 +90,11 @@ class Model implements ModelClass{
 		}
 	}
 
-	setPath(path: string) {
+	verifySchemaCreated(): void {
+		if (typeof this.schema != 'object') throw new Error('The Schema has not been declared');
+	}
+
+	setPath(path: string): void {
 		this.path = path;
 	}
 }

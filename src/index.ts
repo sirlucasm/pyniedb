@@ -31,6 +31,7 @@ class PynieDB implements Pyniedb {
 		const model = new Model(modelName, schema);
 		model.setPath(this.fullPath);
 		model.createTable();
+		model.verifySchemaCreated();
 		return model;
 	}
 }

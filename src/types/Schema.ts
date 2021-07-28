@@ -5,7 +5,7 @@ export interface SchemaClass{
 export type SchemaObject = {
 	[tableName in string]: {
 		type: 'string' | 'number' | 'boolean';
-		required: boolean;
+		default?: string | number | boolean;
 		relation?: {
 			modelName: string;
 		};
