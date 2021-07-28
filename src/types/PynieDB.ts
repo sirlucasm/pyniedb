@@ -1,7 +1,7 @@
-export interface IPynieDB {
-	connect (dbName: string, options: IConnectOptions): void;
+export interface Pyniedb {
+	connect (dbName: string, options: ConnectOptions): void;
 }
 
-export interface IConnectOptions{
+export interface ConnectOptions{
 	path: string;
 }

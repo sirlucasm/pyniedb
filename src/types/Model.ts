@@ -1,7 +1,7 @@
-export interface IModel{
+export interface ModelClass{
 	model: string
 }
 
-export interface ISchemaStructure {
+export interface SchemaStructure {
 	id: number
 }

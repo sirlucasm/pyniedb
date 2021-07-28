@@ -1,13 +1,15 @@
 import path from 'path';
 import fs from 'fs';
-import { IPynieDB, IConnectOptions } from './types/PynieDB';
+import { Pyniedb, ConnectOptions } from './types/PynieDB';
+import { SchemaObject } from './types/Schema';
 
-import Model from './model';
+import Model from './classes/Model';
+import SchemaClass from './classes/Schema';
 
-class PynieDB implements IPynieDB {
-	fullPath: string = '';
+class PynieDB implements Pyniedb {
+	fullPath: string = ''
 
-	connect (dbName: string, options: IConnectOptions) {
+	connect (dbName: string, options: ConnectOptions) {
 		let fullPath: string = '';
 		let pathArray: string[] = [];
 
@@ -25,12 +27,18 @@ class PynieDB implements IPynieDB {
 		}
 	}
 
-	Model (modelName: string) {
-		const model = new Model(modelName);
+	Model (modelName: string, schema: SchemaClass) {
+		const model = new Model(modelName, schema);
 		model.setPath(this.fullPath);
 		model.createTable();
 		return model;
 	}
 }
 
+function Schema (schemaData: SchemaObject) {
+	const schema = new SchemaClass(schemaData);
+	return schema;
+}
+
 export default new PynieDB();
+export { Schema }

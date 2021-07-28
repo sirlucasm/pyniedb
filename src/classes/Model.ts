@@ -1,13 +1,17 @@
-import { IModel, ISchemaStructure } from '../types/Model';
+import { ModelClass, SchemaStructure } from '../types/Model';
 import fs from 'fs';
 import fsPromise from 'fs/promises';
 
-class Model implements IModel{
+import Schema from './Schema';
+
+class Model implements ModelClass{
 	model: string;
+	schema: Schema;
 	private path: string = '';
 
-	constructor (model: string) {
+	constructor (model: string, schema: Schema) {
 		this.model = model;
+		this.schema = schema;
 	}
 
 	async createTable (): Promise<any> {
@@ -21,7 +25,7 @@ class Model implements IModel{
 
 	async create (data: object): Promise<object> {
 		try {
-			const schemaStructure: ISchemaStructure = { id: 1, ...data };
+			const schemaStructure: SchemaStructure = { id: 1, ...data };
 
 			const allData: Array<any> = await this.findAll();
 
@@ -62,7 +66,7 @@ class Model implements IModel{
 	async delete(param: string, value: any): Promise<void> {
 		try {
 			const allData = await this.findAll();
-			const newData = allData.find(data => data[param] != value);
+			const newData = allData.filter(data => data[param] != value);
 			await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify(newData));
 		} catch(error) {
 			return Promise.reject(error);
