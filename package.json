@@ -12,7 +12,8 @@
 		"start": "ts-node index.ts",
 		"dev": "tsc && nodemon lib/index.js",
 		"build": "tsc",
-		"prepare": "npm run build"
+		"prepare": "npm run build",
+		"postversion" : "git push && git push --tags"
 	},
 	"repository": {
 		"type": "git",
