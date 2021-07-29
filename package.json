@@ -1,6 +1,6 @@
 {
 	"name": "pyniedb",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"description": "PynieDB is a local database for your simple applications",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
