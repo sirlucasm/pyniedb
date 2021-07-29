@@ -7,6 +7,7 @@ export type SchemaObject = {
 		type: 'string' | 'number' | 'boolean';
 		default?: string | number | boolean;
 		relation?: {
+			name?: string;
 			modelName: string;
 		};
 	};

@@ -1,4 +1,4 @@
-# PynieDB Usages
+# PynieDB
 
 _**thank you for use**_
 
@@ -65,7 +65,7 @@ _**thank you for use**_
 
 4. adding Relation on Schema
 	```js
-	address: {
+	Address: {
 	    type: 'number',
 	    relation: {
 	        modelName: 'Addresses'
@@ -78,7 +78,7 @@ _**thank you for use**_
 	```
 	then just create an user with new Relation
 	```js
-	User.create({ name: 'Lucas M', address: 1 });
+	User.create({ name: 'Test User', Address: 1 });
 	```
 
 5. fetching User results:
@@ -86,7 +86,28 @@ _**thank you for use**_
 	{
 	    "id": 1,
 	    "name": "Test User",
-	    "address": { "id": 1, "city": "LAS VEGAS" },
+	    "Address": { "id": 1, "city": "LAS VEGAS" },
+	    "active": true
+	}
+	```
+6. Adding name in Schema relation fetch:
+	```js
+	address_id: {
+	    type: 'number',
+	    relation: {
+	        name: 'address',
+	        modelName: 'Addresses'
+	    },
+	}
+	```
+	```js
+	User.create({ name: 'Test User', address_id: 1 });
+	```
+	```json
+	{
+	    "id": 1,
+	    "name": "Test User",
+	    "address": { "id": 1, "city": "LAS VEGAS" }, // name "address" on schema
 	    "active": true
 	}
 	```

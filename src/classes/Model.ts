@@ -97,11 +97,19 @@ class Model implements ModelClass {
 			const schema = this.schema.schema;
 			const response = JSON.parse(await fsPromise.readFile(`${this.path}/${this.model}.json`, { encoding: 'utf8' }));
 			var newResponse: any[] = [];
+
 			Object.keys(schema).map((obj) => {
+				let schemaRelationName = schema[obj].relation?.name;
 				let schemaRelation = schema[obj].relation?.modelName;
 				if (schemaRelation) {
 					let relationModel = JSON.parse(fs.readFileSync(`${this.path}/${schemaRelation}.json`, { encoding: 'utf8' }));
+					let relationResponse: any;
 					response.map((res: any) => {
+						if (typeof schemaRelationName != 'undefined') {
+							relationResponse = res[schemaRelationName] = relationModel.find((rel: any) => rel.id == res[obj]);
+							delete res[obj];
+							return relationResponse;
+						}
 						return res[obj] = relationModel.find((rel: any) => rel.id == res[obj]);
 					})
 					newResponse = response;
