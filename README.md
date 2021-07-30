@@ -32,16 +32,16 @@ _**thank you for use**_
 	const UserSchema = new Schema({
 	    name: {
 	        type: 'string',
-			unique: false,
+            unique: false,
 	    },
 	    email: {
 	        type: 'string',
-			unique: true,
+            unique: true,
 	    },
 	    active: {
 	        type: 'boolean',
 	        default: false, // setting 'default' and then the value
-			unique: false,
+            unique: false,
 	    }
 	});
 
@@ -89,7 +89,7 @@ _**thank you for use**_
 	{
 	    "id": 1,
 	    "name": "Test User",
-		"email": "test@example.com",
+        "email": "test@example.com",
 	    "Address": { "id": 1, "city": "LAS VEGAS" },
 	    "active": true
 	}
@@ -111,7 +111,7 @@ _**thank you for use**_
 	{
 	    "id": 1,
 	    "name": "Test User",
-		"email": "test@example.com",
+        "email": "test@example.com",
 	    "address": { "id": 1, "city": "LAS VEGAS" }, // name "address" on schema
 	    "active": true
 	}
