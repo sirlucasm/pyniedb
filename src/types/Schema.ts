@@ -10,5 +10,6 @@ export type SchemaObject = {
 			name?: string;
 			modelName: string;
 		};
+		unique: boolean;
 	};
 }

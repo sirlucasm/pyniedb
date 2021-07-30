@@ -74,6 +74,14 @@ class Model implements ModelClass {
 					});
 				}
 
+				if (typeof schema[obj].unique != 'undefined' && schema[obj].unique) {
+					const uniqueFind = allData.find((res: any) => {
+						if (typeof schemaStructure[obj] == 'string') return res[obj].toLowerCase() == schemaStructure[obj].toLowerCase();
+						if (typeof schemaStructure[obj] == 'number') return res[obj] == schemaStructure[obj];
+					});
+					if (uniqueFind) error.message = `Unique value is TRUE for '${obj}'`;
+				}
+
 			});
 
 			if (error.message) throw new Error(error.message)
