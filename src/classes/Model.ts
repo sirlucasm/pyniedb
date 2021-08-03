@@ -1,4 +1,4 @@
-import { ModelClass, } from '../types/Model';
+import { ModelClass, MethodParams } from '../types/Model';
 import fs from 'fs';
 import fsPromise from 'fs/promises';
 
@@ -130,11 +130,32 @@ class Model implements ModelClass {
 		}
 	}
 
-	async find(param: string, value: any): Promise<Array<any>> {
+	async find(params: MethodParams): Promise<Array<any>> {
 		try {
-			const allData = await this.findAll();
+			const schema = this.schema.schema;
+			const response = JSON.parse(await fsPromise.readFile(`${this.path}/${this.model}.json`, { encoding: 'utf8' }));
 
-			return allData.find(data => data[param] == value);
+			var newData: any = {};
+			Object.keys(params).map((param) => {
+				newData = response.find((data: any) => data[param] == params[param]);
+			});
+
+			Object.keys(schema).map((obj) => {
+				let schemaRelationName = schema[obj].relation?.name;
+				let schemaRelation = schema[obj].relation?.modelName;
+				if (schemaRelation) {
+					let relationModel = JSON.parse(fs.readFileSync(`${this.path}/${schemaRelation}.json`, { encoding: 'utf8' }));
+
+					if (typeof schemaRelationName != 'undefined') {
+						newData[schemaRelationName] = relationModel.find((rel: any) => rel.id == newData[obj]);
+						delete newData[obj];
+					} else {
+						newData[obj] = relationModel.find((rel: any) => rel.id == newData[obj]);
+					}
+				}
+			});
+
+			return newData;
 		} catch (error) {
 			return Promise.reject(error);
 		}
@@ -142,9 +163,46 @@ class Model implements ModelClass {
 
 	async delete(param: string, value: any): Promise<void> {
 		try {
-			const allData = await this.findAll();
-			const newData = allData.filter(data => data[param] != value);
+			const allData = JSON.parse(await fsPromise.readFile(`${this.path}/${this.model}.json`, { encoding: 'utf8' }));
+			const newData = allData.filter((data: any) => data[param] != value);
 			await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify(newData));
+		} catch (error) {
+			return Promise.reject(error);
+		}
+	}
+
+	async where(params: MethodParams): Promise<Array<any>> {
+		try {
+			const schema = this.schema.schema;
+			const allData = JSON.parse(await fsPromise.readFile(`${this.path}/${this.model}.json`, { encoding: 'utf8' }));
+
+			let newData: string[] = [];
+			Object.keys(params).map((param) => {
+				newData = allData.filter((data: any) => data[param] == params[param]);
+			});
+
+			let newResponse: string[] = [];
+
+			Object.keys(schema).map((obj) => {
+				let schemaRelationName = schema[obj].relation?.name;
+				let schemaRelation = schema[obj].relation?.modelName;
+				if (schemaRelation) {
+					let relationModel = JSON.parse(fs.readFileSync(`${this.path}/${schemaRelation}.json`, { encoding: 'utf8' }));
+					let relationResponse: any;
+					newData.map((res: any) => {
+						if (typeof schemaRelationName != 'undefined') {
+							relationResponse = res[schemaRelationName] = relationModel.find((rel: any) => rel.id == res[obj]);
+							delete res[obj];
+							return relationResponse;
+						}
+						return res[obj] = relationModel.find((rel: any) => rel.id == res[obj]);
+					})
+					newResponse = newData;
+				}
+			});
+
+			return newResponse;
+			// await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify(newData));
 		} catch (error) {
 			return Promise.reject(error);
 		}
