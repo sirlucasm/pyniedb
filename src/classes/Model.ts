@@ -202,7 +202,25 @@ class Model implements ModelClass {
 			});
 
 			return newResponse;
-			// await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify(newData));
+		} catch (error) {
+			return Promise.reject(error);
+		}
+	}
+
+	async update(params: MethodParams, data: any): Promise<any> {
+		try {
+			const allData = JSON.parse(await fsPromise.readFile(`${this.path}/${this.model}.json`, { encoding: 'utf8' }));
+
+			let newData: string[] = [];
+			Object.keys(params).map((param) => {
+				newData = allData.filter((data: any) => data[param] == params[param]);
+				Object.keys(data).map((obj) => {
+					newData.map((res: any) => res[obj] = data[obj]);
+				});
+			});
+
+			await fsPromise.writeFile(`${this.path}/${this.model}.json`, JSON.stringify(allData));
+			return newData;
 		} catch (error) {
 			return Promise.reject(error);
 		}
