@@ -32,13 +32,16 @@ _**thank you for use**_
 	const UserSchema = new Schema({
 	    name: {
 	        type: 'string',
+            unique: false,
 	    },
 	    email: {
 	        type: 'string',
+            unique: true,
 	    },
 	    active: {
 	        type: 'boolean',
 	        default: false, // setting 'default' and then the value
+            unique: false,
 	    }
 	});
 
@@ -78,7 +81,7 @@ _**thank you for use**_
 	```
 	then just create an user with new Relation
 	```js
-	User.create({ name: 'Test User', Address: 1 });
+	User.create({ name: 'Test User', email: "test@example.com", Address: 1 });
 	```
 
 5. fetching User results:
@@ -86,6 +89,7 @@ _**thank you for use**_
 	{
 	    "id": 1,
 	    "name": "Test User",
+        "email": "test@example.com",
 	    "Address": { "id": 1, "city": "LAS VEGAS" },
 	    "active": true
 	}
@@ -101,12 +105,13 @@ _**thank you for use**_
 	}
 	```
 	```js
-	User.create({ name: 'Test User', address_id: 1 });
+	User.create({ name: 'Test User', email: "test@example.com", address_id: 1 });
 	```
 	```json
 	{
 	    "id": 1,
 	    "name": "Test User",
+        "email": "test@example.com",
 	    "address": { "id": 1, "city": "LAS VEGAS" }, // name "address" on schema
 	    "active": true
 	}
